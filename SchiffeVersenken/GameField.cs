@@ -14,7 +14,7 @@ namespace SchiffeVersenken
         private Ship[] ships;
         private Random rnd;
 
-        private bool showShips = false;
+        private bool showShips = true;
 
 
         public GameField(int fieldSize = 10, int nrBs = 1, int nrCr = 2, int nrDest = 3, int nrSub = 4)
@@ -33,6 +33,16 @@ namespace SchiffeVersenken
 
             ships = new Ship[nrBs + nrCr + nrDest + nrSub];
             SetRandomShips(nrBs, nrCr, nrDest, nrSub);
+        }
+
+        internal bool Shoot(int x, int y)
+        {
+            field[x, y, 2] = 'X';
+            if (field[x,y,1].Equals('O'))
+            {
+                return true;
+            }
+            return false;
         }
 
         public void SetRandomShips(int nrBs, int nrCr, int nrDest, int nrSub)
@@ -118,6 +128,7 @@ namespace SchiffeVersenken
 
         public void PrintField()
         {
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Write("   ");
             for (int i = 0; i < fieldSize; i++)
             {
@@ -138,7 +149,7 @@ namespace SchiffeVersenken
                     {
                         //Console.BackgroundColor = ConsoleColor.Red;
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write(field[x, y, 1]);
+                        Console.Write(field[x, y, 2]);
                     }
                     else if(field[x, y, 1].Equals('O') && showShips)
                     {
@@ -158,17 +169,33 @@ namespace SchiffeVersenken
             }
         }
 
-        public bool IsPointInShip(Point point)
+        //public bool IsPointInShip(Point point)
+        //{
+        //    for(int i=0; i<ships.Length; i++)
+        //    {
+        //        if(ships[i].IntersectsShip(point))
+        //        {
+        //            return true;
+        //        }
+        //    }
+
+        //    return false;
+        //}
+
+        public bool PlayerHasWon()
         {
-            for(int i=0; i<ships.Length; i++)
+            for (int y = 0; y < fieldSize; y++)
             {
-                if(ships[i].IntersectsShip(point))
+                for (int x = 0; x < fieldSize; x++)
                 {
-                    return true;
+
+                    if (field[x, y, 1].Equals('O') && !field[x, y, 2].Equals('X'))
+                    {
+                        return false;
+                    }
                 }
             }
-
-            return false;
+            return true;
         }
 
         public void PrintHorizentalLine()
