@@ -34,6 +34,7 @@ namespace SchiffeVersenken
                 Console.WriteLine();
             } while (!gameField.PlayerHasWon());
 
+            gameField.PrintScore();
             Console.WriteLine("\nHerzlichen Glueckwunsch, du hast gewonnen! :)");
 
         }
@@ -46,15 +47,18 @@ namespace SchiffeVersenken
                 string intStr = Console.ReadLine();
                 if(intStr.ToLower().Equals("x"))
                 {
+                    // exit on 'x'
                     System.Environment.Exit(1);
-                } else if (intStr.ToLower().Equals(""))
+                }
+                else if (intStr.ToLower().Equals(""))
                 {
+                    // ignore empty strings
                     continue;
                 }
 
                 int result;
-                Int32.TryParse(intStr, out result);
-                if(result >= 0 && result <= maxValue)
+                if (Int32.TryParse(intStr, out result) 
+                    && result >= 0 && result <= maxValue)
                 {
                     return result;
                 }

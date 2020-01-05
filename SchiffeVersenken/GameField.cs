@@ -45,14 +45,19 @@ namespace SchiffeVersenken
             if(!field[x, y, 2].Equals('X'))
             {
                 field[x, y, 2] = 'X';
-                nrOfHits++;
                 if (field[x,y,1] != 0)
                 {
+                    nrOfHits++;
                     return true;
                 }
             }
 
             return false;
+        }
+
+        internal void PrintScore()
+        {
+            Console.WriteLine($"Schüsse: {nrOfShots} | Treffer: {nrOfHits} | Trefferquote: {((double)nrOfHits/nrOfShots):P2}");
         }
 
         public void SetRandomShips(int nrBs, int nrCr, int nrDest, int nrSub)
