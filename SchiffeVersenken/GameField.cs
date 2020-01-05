@@ -9,19 +9,23 @@ namespace SchiffeVersenken
     public class GameField
     {
         private char[,,] field;
-        private int fieldSize;
+        public int fieldSize { get; }
+        private int nrOfShots;
+        private int nrOfHits;
 
         private Ship[] ships;
         private Random rnd;
 
+        // Debug
         private bool showShips = true;
-
 
         public GameField(int fieldSize = 10, int nrBs = 1, int nrCr = 2, int nrDest = 3, int nrSub = 4)
         {
             rnd = new Random();
             this.fieldSize = fieldSize;
             field = new char[fieldSize, fieldSize,3];
+            nrOfShots = 0;
+            nrOfHits = 0;
 
             for (int y = 0; y < fieldSize; y++)
             {
@@ -37,11 +41,17 @@ namespace SchiffeVersenken
 
         internal bool Shoot(int x, int y)
         {
-            field[x, y, 2] = 'X';
-            if (field[x,y,1].Equals('O'))
+            this.nrOfShots++;
+            if(!field[x, y, 2].Equals('X'))
             {
-                return true;
+                field[x, y, 2] = 'X';
+                nrOfHits++;
+                if (field[x,y,1] != 0)
+                {
+                    return true;
+                }
             }
+
             return false;
         }
 
@@ -100,7 +110,10 @@ namespace SchiffeVersenken
 
             } while (returnShip == null);
 
-            returnShip.SetShipOnField(field);
+            for (int i = 0; i < returnShip.points.Length; i++)
+            {
+                field[returnShip.points[i].X, returnShip.points[i].Y, 1] =  Convert.ToChar(size-1+"");
+            }
 
             return returnShip;
         }
@@ -132,8 +145,7 @@ namespace SchiffeVersenken
             Console.Write("   ");
             for (int i = 0; i < fieldSize; i++)
             {
-                Console.Write(i<10?" ":"");
-                Console.Write(i);
+                Console.Write(String.Format("{0,2}", i));
             }
             Console.WriteLine();
 
@@ -151,7 +163,7 @@ namespace SchiffeVersenken
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.Write(field[x, y, 2]);
                     }
-                    else if(field[x, y, 1].Equals('O') && showShips)
+                    else if(field[x, y, 1] != 0 && showShips)
                     {
                         //Console.BackgroundColor = ConsoleColor.Blue;
                         Console.ForegroundColor = ConsoleColor.Blue;
@@ -178,7 +190,6 @@ namespace SchiffeVersenken
         //            return true;
         //        }
         //    }
-
         //    return false;
         //}
 
@@ -189,7 +200,7 @@ namespace SchiffeVersenken
                 for (int x = 0; x < fieldSize; x++)
                 {
 
-                    if (field[x, y, 1].Equals('O') && !field[x, y, 2].Equals('X'))
+                    if (field[x, y, 1] != 0 && !field[x, y, 2].Equals('X'))
                     {
                         return false;
                     }

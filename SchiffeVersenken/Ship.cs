@@ -19,7 +19,7 @@ namespace SchiffeVersenken
 
     public class Ship
     {
-        private Point[] points;
+        public Point[] points { get; }
         private bool vertical;
 
         public Ship(int xStart, int yStart, int xStop, int yStop)
@@ -82,13 +82,13 @@ namespace SchiffeVersenken
         }
 
 
-        internal void SetShipOnField(char[,,] field)
-        {
-            for(int i=0; i<points.Length; i++)
-            {
-                field[points[i].X, points[i].Y, 1] = 'O';
-            }
-        }
+        //internal void SetShipOnField(char[,,] field)
+        //{
+        //    for(int i=0; i<points.Length; i++)
+        //    {
+        //        field[points[i].X, points[i].Y, 1] = 'O';
+        //    }
+        //}
     }
 
 }
