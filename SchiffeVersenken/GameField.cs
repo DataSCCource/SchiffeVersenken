@@ -6,18 +6,19 @@ using System.Threading.Tasks;
 
 namespace SchiffeVersenken
 {
-    public class GameField
+    public abstract class GameField : IUpdateUI, IInputVerification
     {
-        private char[,,] field;
         public int fieldSize { get; }
-        private int nrOfShots;
-        private int nrOfHits;
+        protected char[,,] field;
+        protected int nrOfShots;
+        protected int nrOfHits;
+        protected bool lastShotWasHit;
 
         private Ship[] ships;
         private Random rnd;
 
-        // TODO: For debug purposes
-        private bool showShips = true;
+        // For debug purposes
+        public bool ShowShips { get; set; }
 
         /// <summary>
         /// Construct a gamefield
@@ -34,6 +35,8 @@ namespace SchiffeVersenken
             field = new char[fieldSize, fieldSize,3];
             nrOfShots = 0;
             nrOfHits = 0;
+            lastShotWasHit = false;
+            ShowShips = false;
 
             // Initialize field
             for (int y = 0; y < fieldSize; y++)
@@ -48,6 +51,7 @@ namespace SchiffeVersenken
             ships = new Ship[nrBs + nrCr + nrDest + nrSub];
             SetRandomShips(nrBs, nrCr, nrDest, nrSub);
         }
+
 
         /// <summary>
         /// Attempt to shoot
@@ -64,19 +68,13 @@ namespace SchiffeVersenken
                 if (field[x,y,1] != 0)
                 {
                     nrOfHits++;
+                    lastShotWasHit = true;
                     return true;
                 }
             }
 
+            lastShotWasHit = false;
             return false;
-        }
-
-        /// <summary>
-        /// Print current score
-        /// </summary>
-        internal void PrintScore()
-        {
-            Console.WriteLine($"Schüsse: {nrOfShots} | Treffer: {nrOfHits} | Trefferquote: {((double)nrOfHits/nrOfShots):P2}");
         }
 
         /// <summary>
@@ -135,18 +133,16 @@ namespace SchiffeVersenken
                 returnShip = new Ship(startX, startY, stopX, stopY);
                 for (int i=0; i < ships.Length; i++)
                 {
-                    if(ships[i] != null)
+                    if(ships[i] != null && ships[i].IntersectsShip(returnShip))
                     {
-                        if(ships[i].IntersectsShip(returnShip))
-                        {
-                            returnShip = null;
-                            break;
-                        }
+                        returnShip = null;
+                        break;
                     }
                 }
 
             } while (returnShip == null);
 
+            // Add created Ship to field
             for (int i = 0; i < returnShip.points.Length; i++)
             {
                 field[returnShip.points[i].X, returnShip.points[i].Y, 1] =  Convert.ToChar(size-1+"");
@@ -209,58 +205,23 @@ namespace SchiffeVersenken
         /// <summary>
         /// Print gamefield, fired shots and, if requested, the ships
         /// </summary>
-        public void PrintField()
-        {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("   ");
-            for (int i = 0; i < fieldSize; i++)
-            {
-                Console.Write(String.Format("{0,2}", i));
-            }
-            Console.WriteLine();
-
-
-            for (int y = 0; y < fieldSize; y++)
-            {
-                //Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(String.Format("{0,3} ", y));
-                for (int x = 0; x < fieldSize; x++)
-                {
-                    if(field[x, y, 2].Equals('X'))
-                    {
-                        //Console.BackgroundColor = ConsoleColor.Red;
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write(field[x, y, 2]);
-                    }
-                    else if(field[x, y, 1] != 0 && showShips)
-                    {
-                        //Console.BackgroundColor = ConsoleColor.Blue;
-                        Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.Write(field[x, y, 1]);
-                    } else
-                    {
-                        //Console.BackgroundColor = ConsoleColor.Black;
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.Write(field[x, y, 0]);
-                    }
-//                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.Write(" ");
-                }
-                Console.WriteLine();
-            }
-        }
+        public abstract void UpdateField();
 
         /// <summary>
-        /// Print a horizontal line
+        /// Print current score
         /// </summary>
-        public void PrintHorizentalLine()
-        {
-            for(int i = 0; i<2* fieldSize + 4; i++)
-            {
-                Console.Write('-');
-            }
-            Console.WriteLine();
-        }
+        public abstract void UpdateScore();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="maxValue"></param>
+        /// <returns></returns>
+        public abstract int GetIntInput(string message);
+
+        public abstract void ShowHitMessage();
+
+        public abstract void PlayerWonMessage();
     }
 }
