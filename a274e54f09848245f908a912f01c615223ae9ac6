@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "87bfdd2f_c17ae51d",
+        "filename": "SchiffeVersenken/GameField.cs",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1017332
+      },
+      "writtenOn": "2020-01-05T19:03:42Z",
+      "side": 1,
+      "message": "remove space",
+      "range": {
+        "startLine": 119,
+        "startChar": 49,
+        "endLine": 119,
+        "endChar": 50
+      },
+      "revId": "a274e54f09848245f908a912f01c615223ae9ac6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b94bd92d_1dbe7cf3",
+        "filename": "SchiffeVersenken/Ship.cs",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1017332
+      },
+      "writtenOn": "2020-01-05T19:03:42Z",
+      "side": 1,
+      "message": "remove the c",
+      "range": {
+        "startLine": 52,
+        "startChar": 41,
+        "endLine": 52,
+        "endChar": 42
+      },
+      "revId": "a274e54f09848245f908a912f01c615223ae9ac6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a023efad_85766401",
+        "filename": "SchiffeVersenken/Ship.cs",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1017332
+      },
+      "writtenOn": "2020-01-05T19:03:42Z",
+      "side": 1,
+      "message": "remove whitespace",
+      "range": {
+        "startLine": 63,
+        "startChar": 57,
+        "endLine": 63,
+        "endChar": 58
+      },
+      "revId": "a274e54f09848245f908a912f01c615223ae9ac6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
