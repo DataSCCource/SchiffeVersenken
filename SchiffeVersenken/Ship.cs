@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SchiffeVersenken
 {
+    /// <summary>
+    /// Simple Point structure with X, Y Coordinate and an Equals-Method
+    /// </summary>
     public struct Point
     {
         public int X { get; set; }
@@ -17,6 +20,9 @@ namespace SchiffeVersenken
         }
     }
 
+    /// <summary>
+    /// Class that represents one Ship
+    /// </summary>
     public class Ship
     {
         public Point[] points { get; }
@@ -42,6 +48,11 @@ namespace SchiffeVersenken
             }
         }
 
+        /// <summary>
+        /// Check if another ship intersects with this ship
+        /// </summary>
+        /// <param name="other">The other ship</param>
+        /// <returns></returns>
         public bool IntersectsShip(Ship other)
         {
             for (int i = 0; i < points.Length; i++)
@@ -49,7 +60,7 @@ namespace SchiffeVersenken
                 for(int j=0; j < other.points.Length; j++)
                 {
                     // if point of ship intersects with point of other ship
-                    if (points[i].X == other.points[j].X && points[i].Y == other.points[j].Y)
+                    if(points[i].Equals(other.points[j]))
                     {
                         return true;
                     }
@@ -68,6 +79,11 @@ namespace SchiffeVersenken
             return false;
         }
 
+        /// <summary>
+        /// Check if a Point intersects with this ship
+        /// </summary>
+        /// <param name="point">Point</param>
+        /// <returns></returns>
         public bool IntersectsShip(Point point)
         {
             for (int i = 0; i < points.Length; i++)
@@ -80,15 +96,5 @@ namespace SchiffeVersenken
             }
             return false;
         }
-
-
-        //internal void SetShipOnField(char[,,] field)
-        //{
-        //    for(int i=0; i<points.Length; i++)
-        //    {
-        //        field[points[i].X, points[i].Y, 1] = 'O';
-        //    }
-        //}
     }
-
 }

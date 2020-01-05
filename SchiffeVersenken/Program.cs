@@ -32,13 +32,20 @@ namespace SchiffeVersenken
                     Console.WriteLine("Leider kein Treffer! :(");
                 }
                 Console.WriteLine();
+                gameField.PrintScore();
             } while (!gameField.PlayerHasWon());
 
-            gameField.PrintScore();
             Console.WriteLine("\nHerzlichen Glueckwunsch, du hast gewonnen! :)");
 
         }
 
+        /// <summary>
+        /// Get userinput and validate it.
+        /// Exit Game on 'x'
+        /// </summary>
+        /// <param name="message">Message to show</param>
+        /// <param name="maxValue">Do validation of userinput</param>
+        /// <returns></returns>
         private static int GetIntInput(string message, int maxValue)
         {
             do
