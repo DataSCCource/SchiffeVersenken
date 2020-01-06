@@ -13,8 +13,9 @@ namespace SchiffeVersenken
         protected int nrOfShots;
         protected int nrOfHits;
         protected bool lastShotWasHit;
+        protected int lastShotKilledShip;
+        protected Ship[] ships;
 
-        private Ship[] ships;
         private Random rnd;
 
         // For debug purposes
@@ -36,6 +37,7 @@ namespace SchiffeVersenken
             nrOfShots = 0;
             nrOfHits = 0;
             lastShotWasHit = false;
+            lastShotKilledShip = -1;
             ShowShips = false;
 
             // Initialize field
@@ -69,11 +71,22 @@ namespace SchiffeVersenken
                 {
                     nrOfHits++;
                     lastShotWasHit = true;
+                    lastShotKilledShip = -1;
+
+                    for (int i = 0; i < ships.Length; i++)
+                    {
+                        if(ships[i].ShootShip(new Point { X=x, Y=y }) && !ships[i].IsAlive)
+                        {
+                            lastShotKilledShip = i;
+                        }
+                    }
+
                     return true;
                 }
             }
 
             lastShotWasHit = false;
+            lastShotKilledShip = -1;
             return false;
         }
 

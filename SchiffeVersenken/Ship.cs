@@ -26,12 +26,42 @@ namespace SchiffeVersenken
     public class Ship
     {
         public Point[] points { get; }
+        private bool[] pointsAlive;
         private bool vertical;
+        public bool IsAlive {
+            get
+            {
+                // Ship is alive, if any point is still alive
+                return pointsAlive.Any(alive => alive);
+            }
+        }
+        public string shipType
+        {
+            get
+            {
+                switch (points.Length)
+                {
+                    case 5:
+                        return "Schlachtschiff";
+                    case 4:
+                        return "Kreuzer";
+                    case 3:
+                        return "Zerstörer";
+                    case 2:
+                        return "U-Boot";
+                    default:
+                        return "unbekanntes Schiff";
+                }
+            }
+        }
+
 
         public Ship(int xStart, int yStart, int xStop, int yStop)
         {
             vertical = xStart == xStop;
             points = new Point[Math.Max(xStop+1 - xStart, yStop+1 - yStart)];
+            //pointsAlive = new bool[points.Length];
+            pointsAlive = Enumerable.Repeat(true, points.Length).ToArray();
 
             for (int i = 0; i < points.Length; i++)
             {
@@ -84,16 +114,17 @@ namespace SchiffeVersenken
         /// </summary>
         /// <param name="point">Point</param>
         /// <returns></returns>
-        public bool IntersectsShip(Point point)
+        public bool ShootShip(Point point)
         {
             for (int i = 0; i < points.Length; i++)
             {
-                if(points[i].Equals(point))
+                if (points[i].Equals(point))
                 {
+                    pointsAlive[i] = false;
                     return true;
                 }
-
             }
+
             return false;
         }
     }
