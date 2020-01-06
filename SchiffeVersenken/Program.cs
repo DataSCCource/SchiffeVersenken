@@ -10,8 +10,8 @@ namespace SchiffeVersenken
     {
         static void Main(string[] args)
         {
-            GameField gameField = new GameFieldConsole();
-            //GameField gameField = new GameFieldConsole(10, 0, 0, 0, 1);
+            //GameField gameField = new GameFieldConsole();
+            GameField gameField = new GameFieldConsole(10, 1, 1, 1, 1);
             //GameField gameField = new GameFieldConsole(20, 4, 8, 12, 16);
 
             // TODO: Remove
