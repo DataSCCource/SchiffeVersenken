@@ -37,7 +37,13 @@ namespace SchiffeVersenken
                 Console.Write(String.Format("{0,3} ", y));
                 for (int x = 0; x < fieldSize; x++)
                 {
-                    if (field[x, y, 2].Equals('X'))
+                    if (field[x, y, 2].Equals('W'))
+                    {
+                        //Console.BackgroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write(field[x, y, 2]);
+                    }
+                    else if (field[x, y, 2].Equals('X'))
                     {
                         //Console.BackgroundColor = ConsoleColor.Red;
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -46,7 +52,7 @@ namespace SchiffeVersenken
                     else if (field[x, y, 1] != 0 && ShowShips)
                     {
                         //Console.BackgroundColor = ConsoleColor.Blue;
-                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.Magenta;
                         Console.Write(field[x, y, 1]);
                     }
                     else
@@ -124,7 +130,7 @@ namespace SchiffeVersenken
                 Console.WriteLine("Treffer! :)");
                 if (lastShotKilledShip != -1)
                 {
-                    Console.WriteLine($"{ships[lastShotKilledShip].shipType} zerstört!");
+                    Console.WriteLine($"{ships[lastShotKilledShip].shipType} zerstört! \\o/");
                 }
 
             }

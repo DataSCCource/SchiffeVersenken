@@ -66,9 +66,10 @@ namespace SchiffeVersenken
             this.nrOfShots++;
             if(!field[x, y, 2].Equals('X'))
             {
-                field[x, y, 2] = 'X';
+                field[x, y, 2] = 'W';
                 if (field[x,y,1] != 0)
                 {
+                    field[x, y, 2] = 'X';
                     nrOfHits++;
                     lastShotWasHit = true;
                     lastShotKilledShip = -1;
