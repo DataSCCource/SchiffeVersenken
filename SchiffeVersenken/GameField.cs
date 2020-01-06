@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SchiffeVersenken
 {
-    public abstract class GameField : IUpdateUI, IInputVerification
+    public abstract class GameField : IUpdateUI
     {
-        public int fieldSize { get; }
+        public int FieldSize { get; }
         protected char[,,] field;
         protected int nrOfShots;
         protected int nrOfHits;
@@ -16,7 +16,7 @@ namespace SchiffeVersenken
         protected int lastShotKilledShip;
         protected Ship[] ships;
 
-        private Random rnd;
+        private readonly Random rnd;
 
         // For debug purposes
         public bool ShowShips { get; set; }
@@ -32,7 +32,7 @@ namespace SchiffeVersenken
         public GameField(int fieldSize = 10, int nrBs = 1, int nrCr = 2, int nrDest = 3, int nrSub = 4)
         {
             rnd = new Random();
-            this.fieldSize = fieldSize;
+            this.FieldSize = fieldSize;
             field = new char[fieldSize, fieldSize,3];
             nrOfShots = 0;
             nrOfHits = 0;
@@ -76,7 +76,7 @@ namespace SchiffeVersenken
 
                     for (int i = 0; i < ships.Length; i++)
                     {
-                        if(ships[i].ShootShip(new Point { X=x, Y=y }) && !ships[i].IsAlive)
+                        if(ships[i].ShootShip(x, y) && !ships[i].IsAlive)
                         {
                             lastShotKilledShip = i;
                         }
@@ -135,12 +135,12 @@ namespace SchiffeVersenken
         /// <returns>The placed ship</returns>
         private Ship CreateRandomShip(int size)
         {
-            Ship returnShip = null;
+            Ship returnShip;
             do
             {
                 bool vertical = rnd.Next() % 2 == 0;
-                int startX = rnd.Next(0, vertical ? fieldSize : fieldSize - size);
-                int startY = rnd.Next(0, vertical ? fieldSize - size : fieldSize);
+                int startX = rnd.Next(0, vertical ? FieldSize : FieldSize - size);
+                int startY = rnd.Next(0, vertical ? FieldSize - size : FieldSize);
                 int stopX = vertical ? startX : startX + size-1;
                 int stopY = vertical ? startY + size-1 : startY;
 
@@ -157,9 +157,9 @@ namespace SchiffeVersenken
             } while (returnShip == null);
 
             // Add created Ship to field
-            for (int i = 0; i < returnShip.points.Length; i++)
+            for (int i = 0; i < returnShip.Points.Length; i++)
             {
-                field[returnShip.points[i].X, returnShip.points[i].Y, 1] =  Convert.ToChar(size-1+"");
+                field[returnShip.Points[i].X, returnShip.Points[i].Y, 1] =  Convert.ToChar(size-1+"");
             }
 
             return returnShip;
@@ -202,9 +202,9 @@ namespace SchiffeVersenken
         /// </summary>
         public bool PlayerHasWon()
         {
-            for (int y = 0; y < fieldSize; y++)
+            for (int y = 0; y < FieldSize; y++)
             {
-                for (int x = 0; x < fieldSize; x++)
+                for (int x = 0; x < FieldSize; x++)
                 {
 
                     if (field[x, y, 1] != 0 && !field[x, y, 2].Equals('X'))
@@ -225,14 +225,6 @@ namespace SchiffeVersenken
         /// Print current score
         /// </summary>
         public abstract void UpdateScore();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="maxValue"></param>
-        /// <returns></returns>
-        public abstract int GetIntInput(string message);
 
         public abstract void ShowHitMessage();
 

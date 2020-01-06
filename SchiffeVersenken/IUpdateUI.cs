@@ -13,9 +13,4 @@ namespace SchiffeVersenken
         void ShowHitMessage();
         void PlayerWonMessage();
     }
-
-    public interface IInputVerification
-    {
-        int GetIntInput(string message);
-    }
 }

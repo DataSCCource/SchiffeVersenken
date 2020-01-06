@@ -8,61 +8,31 @@ namespace SchiffeVersenken
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            int fieldSize = AskForFieldSize();
+            int fieldSize = Helper.GetIntInput("Bitte Feldgröße angeben ({min}-{max}) Standard ist {defaultValue}: ", 10, 20, 10);
 
             //GameField gameField = new GameFieldConsole(fieldSize);
-            GameField gameField = new GameFieldConsole(fieldSize, 0, 0, 0, 1);
             //GameField gameField = new GameFieldConsole(20, 4, 8, 12, 16);
 
             // TODO: Remove
-            gameField.ShowShips = true;
+            GameField gameField = new GameFieldConsole(fieldSize, 0, 0, 0, 1)
+            {
+                ShowShips = true
+            };
 
             do
             {
                 gameField.UpdateField();
 
-                int x = gameField.GetIntInput("Bitte X-Koordinate eingeben: ");
-                int y = gameField.GetIntInput("Bitte Y-Koordinate eingeben: ");
+                int x = Helper.GetIntInput("Bitte X-Koordinate eingeben: ", 0, fieldSize - 1);
+                int y = Helper.GetIntInput("Bitte Y-Koordinate eingeben: ", 0, fieldSize - 1);
 
                 gameField.Shoot(x, y);
 
             } while (!gameField.PlayerHasWon());
 
             gameField.PlayerWonMessage();
-        }
-
-        private static int AskForFieldSize()
-        {
-            int defaultSize = 10;
-            int min = 10;
-            int max = 20;
-            Console.WriteLine(@"'x' oder 'q' zum Beenden");
-            do
-            {
-                Console.Write($"Bitte Feldgröße angeben ({min}-{max}) Standard ist {defaultSize}: ");
-                string intStr = Console.ReadLine();
-                // exit on 'x' or 'q'
-                if (intStr.ToLower().Equals("x") || intStr.ToLower().Equals("q"))
-                {
-                    System.Environment.Exit(1);
-                }
-                else if (intStr.ToLower().Equals(""))
-                {
-                    return defaultSize;
-                }
-
-                int result;
-                if (Int32.TryParse(intStr, out result)
-                    && result >= min && result <= max)
-                {
-                    return result;
-                }
-
-                Console.WriteLine($"Ungültige Eingabe. Bitte nur Werte zwischen {min} und {max} eingeben!");
-            } while (true);
-
         }
     }
 }

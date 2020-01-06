@@ -23,19 +23,19 @@ namespace SchiffeVersenken
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write("   ");
-            for (int i = 0; i < fieldSize; i++)
+            for (int i = 0; i < FieldSize; i++)
             {
                 Console.Write(String.Format("{0,2}", i));
             }
             Console.WriteLine(" X");
 
 
-            for (int y = 0; y < fieldSize; y++)
+            for (int y = 0; y < FieldSize; y++)
             {
                 //Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(String.Format("{0,3} ", y));
-                for (int x = 0; x < fieldSize; x++)
+                for (int x = 0; x < FieldSize; x++)
                 {
                     if (field[x, y, 2].Equals('W'))
                     {
@@ -67,8 +67,9 @@ namespace SchiffeVersenken
                 Console.WriteLine();
             }
 
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("  Y");
-            for (int i = 0; i < 2 * fieldSize + 4; i++)
+            for (int i = 0; i < 2 * FieldSize + 4; i++)
             {
                 Console.Write('-');
             }
@@ -86,43 +87,6 @@ namespace SchiffeVersenken
             Console.WriteLine();
         }
 
-
-        /// <summary>
-        /// Get userinput and validate it.
-        /// Exit Game on 'x'
-        /// </summary>
-        /// <param name="message">Message to show</param>
-        /// <param name="maxValue">Do validation of userinput</param>
-        /// <returns></returns>
-        public override int GetIntInput(string message)
-        {
-            Console.WriteLine(@"'x' oder 'q' zum Beenden");
-            do
-            {
-                Console.Write(message);
-                string intStr = Console.ReadLine();
-                // exit on 'x' or 'q'
-                if (intStr.ToLower().Equals("x") || intStr.ToLower().Equals("q"))
-                {
-                    System.Environment.Exit(1);
-                }
-                else if (intStr.ToLower().Equals(""))
-                {
-                    // ignore empty strings
-                    continue;
-                }
-
-                int result;
-                if (Int32.TryParse(intStr, out result)
-                    && result >= 0 && result <= fieldSize - 1)
-                {
-                    return result;
-                }
-
-                Console.WriteLine($"Ungültige Eingabe. Bitte nur Werte zwischen 0 und {fieldSize - 1} eingeben!");
-            } while (true);
-        }
-
         public override void ShowHitMessage()
         {
             if (lastShotWasHit)
@@ -130,7 +94,7 @@ namespace SchiffeVersenken
                 Console.WriteLine("Treffer! :)");
                 if (lastShotKilledShip != -1)
                 {
-                    Console.WriteLine($"{ships[lastShotKilledShip].shipType} zerstört! \\o/");
+                    Console.WriteLine($"{ships[lastShotKilledShip].ShipType} zerstört! \\o/");
                 }
 
             }

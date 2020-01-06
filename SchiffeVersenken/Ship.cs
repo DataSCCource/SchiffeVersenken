@@ -3,31 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SchiffeVersenken.Helper;
 
 namespace SchiffeVersenken
 {
-    /// <summary>
-    /// Simple Point structure with X, Y Coordinate and an Equals-Method
-    /// </summary>
-    public struct Point
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-
-        public bool Equals(Point point)
-        {
-            return point.X == X && point.Y == Y;
-        }
-    }
-
     /// <summary>
     /// Class that represents one Ship
     /// </summary>
     public class Ship
     {
-        public Point[] points { get; }
-        private bool[] pointsAlive;
-        private bool vertical;
+        public Point[] Points { get; }
+        private readonly bool[] pointsAlive;
+        private readonly bool vertical;
         public bool IsAlive {
             get
             {
@@ -35,11 +22,11 @@ namespace SchiffeVersenken
                 return pointsAlive.Any(alive => alive);
             }
         }
-        public string shipType
+        public string ShipType
         {
             get
             {
-                switch (points.Length)
+                switch (Points.Length)
                 {
                     case 5:
                         return "Schlachtschiff";
@@ -50,7 +37,7 @@ namespace SchiffeVersenken
                     case 2:
                         return "U-Boot";
                     default:
-                        return "unbekanntes Schiff";
+                        return "unbekannter Schiffstyp";
                 }
             }
         }
@@ -59,20 +46,20 @@ namespace SchiffeVersenken
         public Ship(int xStart, int yStart, int xStop, int yStop)
         {
             vertical = xStart == xStop;
-            points = new Point[Math.Max(xStop+1 - xStart, yStop+1 - yStart)];
-            pointsAlive = Enumerable.Repeat(true, points.Length).ToArray();
+            Points = new Point[Math.Max(xStop+1 - xStart, yStop+1 - yStart)];
+            pointsAlive = Enumerable.Repeat(true, Points.Length).ToArray();
 
-            for (int i = 0; i < points.Length; i++)
+            for (int i = 0; i < Points.Length; i++)
             {
                 if (vertical)
                 {
-                    points[i].X = xStart;
-                    points[i].Y = yStart + i;
+                    Points[i].X = xStart;
+                    Points[i].Y = yStart + i;
                 }
                 else
                 {
-                    points[i].X = xStart + i;
-                    points[i].Y = yStart;
+                    Points[i].X = xStart + i;
+                    Points[i].Y = yStart;
                 }
             }
         }
@@ -84,21 +71,21 @@ namespace SchiffeVersenken
         /// <returns></returns>
         public bool IntersectsShip(Ship other)
         {
-            for (int i = 0; i < points.Length; i++)
+            for (int i = 0; i < Points.Length; i++)
             {
-                for(int j=0; j < other.points.Length; j++)
+                for(int j=0; j < other.Points.Length; j++)
                 {
                     // if point of ship intersects with point of other ship
-                    if(points[i].Equals(other.points[j]))
+                    if(Points[i].Equals(other.Points[j]))
                     {
                         return true;
                     }
 
                     // ships should not touch each other
-                    if(  points[i].X + 1 == other.points[j].X && points[i].Y == other.points[j].Y
-                      || points[i].X == other.points[j].X && points[i].Y + 1 == other.points[j].Y
-                      || points[i].X - 1 == other.points[j].X && points[i].Y == other.points[j].Y
-                      || points[i].X == other.points[j].X && points[i].Y - 1 == other.points[j].Y
+                    if(  Points[i].X + 1 == other.Points[j].X && Points[i].Y == other.Points[j].Y
+                      || Points[i].X == other.Points[j].X && Points[i].Y + 1 == other.Points[j].Y
+                      || Points[i].X - 1 == other.Points[j].X && Points[i].Y == other.Points[j].Y
+                      || Points[i].X == other.Points[j].X && Points[i].Y - 1 == other.Points[j].Y
                       )
                     {
                         return true;
@@ -113,11 +100,11 @@ namespace SchiffeVersenken
         /// </summary>
         /// <param name="point">Point</param>
         /// <returns></returns>
-        public bool ShootShip(Point point)
+        public bool ShootShip(int x, int y)
         {
-            for (int i = 0; i < points.Length; i++)
+            for (int i = 0; i < Points.Length; i++)
             {
-                if (points[i].Equals(point))
+                if (Points[i].Equals(x, y))
                 {
                     pointsAlive[i] = false;
                     return true;
