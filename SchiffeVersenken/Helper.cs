@@ -16,19 +16,27 @@ namespace SchiffeVersenken
             public int X { get; set; }
             public int Y { get; set; }
 
-            public bool Equals(Point point)
+            public override bool Equals(object obj)
             {
-                return point.X == X && point.Y == Y;
+                if (obj is Point point)
+                {
+                    return this.Equals(point);
+                }
+                return false;
+            }
+
+            private bool Equals(Point point)
+            {
+                return point.X == this.X && point.Y == this.Y;
             }
             public bool Equals(int x, int y)
             {
-                return x == X && y == Y;
+                return x == this.X && y == this.Y;
             }
         }
 
         public static int GetIntInput(string message, int min, int max, int defaultValue = -1)
         {
-            Console.WriteLine(@"'x' oder 'q' zum Beenden");
             message = message.Replace("{min}", min.ToString());
             message = message.Replace("{max}", max.ToString());
             message = message.Replace("{defaultValue}", defaultValue.ToString());
@@ -39,7 +47,7 @@ namespace SchiffeVersenken
                 // exit on 'x' or 'q'
                 if (intStr.ToLower().Equals("x") || intStr.ToLower().Equals("q"))
                 {
-                    System.Environment.Exit(1);
+                    return int.MinValue;
                 }
                 else if (intStr.ToLower().Equals(""))
                 {
@@ -58,6 +66,14 @@ namespace SchiffeVersenken
                 Console.WriteLine($"Ungültige Eingabe. Bitte nur Ganzzahlen zwischen {min} und {max} eingeben!");
             } while (true);
 
+        }
+
+        public static void CheckExitInt(int value)
+        {
+            if(value == int.MinValue)
+            {
+                System.Environment.Exit(1);
+            }
         }
     }
 }
