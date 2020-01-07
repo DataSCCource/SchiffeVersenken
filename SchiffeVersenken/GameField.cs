@@ -12,6 +12,7 @@ namespace SchiffeVersenken
         protected char[,,] field;
         protected int nrOfShots;
         protected int nrOfHits;
+        protected int maxHits;
         protected bool lastShotWasHit;
         protected int lastShotKilledShip;
         protected Ship[] ships;
@@ -36,6 +37,7 @@ namespace SchiffeVersenken
             field = new char[fieldSize, fieldSize,3];
             nrOfShots = 0;
             nrOfHits = 0;
+            maxHits = 0;
             lastShotWasHit = false;
             lastShotKilledShip = -1;
             ShowShips = false;
@@ -161,6 +163,7 @@ namespace SchiffeVersenken
             {
                 field[returnShip.Points[i].X, returnShip.Points[i].Y, 1] =  Convert.ToChar(size-1+"");
             }
+            maxHits += size;
 
             return returnShip;
         }
@@ -202,18 +205,19 @@ namespace SchiffeVersenken
         /// </summary>
         public bool PlayerHasWon()
         {
-            for (int y = 0; y < FieldSize; y++)
-            {
-                for (int x = 0; x < FieldSize; x++)
-                {
+            return maxHits == nrOfHits;
+            //for (int y = 0; y < FieldSize; y++)
+            //{
+            //    for (int x = 0; x < FieldSize; x++)
+            //    {
 
-                    if (field[x, y, 1] != 0 && !field[x, y, 2].Equals('X'))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
+            //        if (field[x, y, 1] != 0 && !field[x, y, 2].Equals('X'))
+            //        {
+            //            return false;
+            //        }
+            //    }
+            //}
+            //return true;
         }
 
         /// <summary>

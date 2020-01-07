@@ -18,7 +18,7 @@ namespace SchiffeVersenken
         public override void UpdateField()
         {
             Console.Clear();
-            if (nrOfShots > 0) ShowHitMessage(); else Console.WriteLine("\n");
+            if (nrOfShots > 0) ShowHitMessage(); else Console.WriteLine("\n\n");
             UpdateScore();
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -32,41 +32,46 @@ namespace SchiffeVersenken
 
             for (int y = 0; y < FieldSize; y++)
             {
-                //Console.BackgroundColor = ConsoleColor.Black;
+                Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(String.Format("{0,3} ", y));
                 for (int x = 0; x < FieldSize; x++)
                 {
                     if (field[x, y, 2].Equals('W'))
                     {
-                        //Console.BackgroundColor = ConsoleColor.Red;
-                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write(field[x, y, 2]);
                         Console.Write(field[x, y, 2]);
                     }
                     else if (field[x, y, 2].Equals('X'))
                     {
-                        //Console.BackgroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.Red;
                         Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write(field[x, y, 2]);
                         Console.Write(field[x, y, 2]);
                     }
                     else if (field[x, y, 1] != 0 && ShowShips)
                     {
-                        //Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.BackgroundColor = ConsoleColor.Magenta;
                         Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.Write(field[x, y, 1]);
                         Console.Write(field[x, y, 1]);
                     }
                     else
                     {
-                        //Console.BackgroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.White;
                         Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write(field[x, y, 0]);
                         Console.Write(field[x, y, 0]);
                     }
                     //Console.BackgroundColor = ConsoleColor.Black;
-                    Console.Write(" ");
+                    //Console.Write(" ");
                 }
                 Console.WriteLine();
             }
 
+            Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("  Y");
             for (int i = 0; i < 2 * FieldSize + 4; i++)
@@ -83,7 +88,7 @@ namespace SchiffeVersenken
         {
             double hitQuotient = 0;
             if (nrOfShots > 0) hitQuotient = (double)nrOfHits / nrOfShots;
-            Console.WriteLine($"Schüsse: {nrOfShots} | Treffer: {nrOfHits} | Trefferquote: {hitQuotient:P2}");
+            Console.WriteLine($"# Schüsse: {nrOfShots} | Treffer: {nrOfHits} | Trefferquote: {hitQuotient:P2}");
             Console.WriteLine();
         }
 
@@ -91,16 +96,21 @@ namespace SchiffeVersenken
         {
             if (lastShotWasHit)
             {
-                Console.WriteLine("Treffer! :)");
+                Console.WriteLine("* Treffer! :) *");
                 if (lastShotKilledShip != -1)
                 {
-                    Console.WriteLine($"{ships[lastShotKilledShip].ShipType} zerstört! \\o/");
+                    Console.WriteLine($"*** {ships[lastShotKilledShip].ShipType} zerstört! ***");
+                } 
+                else
+                {
+                    Console.WriteLine();
                 }
-
             }
             else
             {
-                Console.WriteLine("Leider kein Treffer! :(");
+                Console.WriteLine("Leider kein Treffer! ¯\\_(ツ)_/¯");
+                
+                Console.WriteLine();
             }
             Console.WriteLine();
         }
@@ -108,7 +118,7 @@ namespace SchiffeVersenken
         public override void PlayerWonMessage()
         {
             UpdateField();
-            Console.WriteLine("\nHerzlichen Glueckwunsch, du hast gewonnen! :)");
+            Console.WriteLine("\nHerzlichen Glueckwunsch, du hast gewonnen! \\o/");
         }
     }
 }
