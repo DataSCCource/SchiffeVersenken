@@ -1,0 +1,8 @@
+[gerrit]
+	host=review.gerrithub.io
+	port=29418
+	project=DataSCCource/SchiffeVersenken
+	defaultbranch=master
+	defaultremote=origin
+	defaultrebase=0
+	HEAD=/refs/for/*
