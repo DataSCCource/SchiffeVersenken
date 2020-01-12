@@ -14,7 +14,7 @@ namespace SchiffeVersenken
     {
         public Point[] Points { get; }
         private readonly bool[] pointsAlive;
-        private readonly bool vertical;
+
         public bool IsAlive {
             get
             {
@@ -22,6 +22,7 @@ namespace SchiffeVersenken
                 return pointsAlive.Any(alive => alive);
             }
         }
+
         public string ShipType
         {
             get
@@ -42,34 +43,36 @@ namespace SchiffeVersenken
             }
         }
 
-
         public Ship(int xStart, int yStart, int xStop, int yStop)
+            : this (new Point { X = xStart, Y = yStart}, new Point { X = xStop, Y = yStop }) { }
+
+        public Ship(Point startPoint, Point stopPoint) 
         {
-            vertical = xStart == xStop;
-            Points = new Point[Math.Max(xStop+1 - xStart, yStop+1 - yStart)];
+            bool vertical = startPoint.X == stopPoint.X;
+            Points = new Point[Math.Max(stopPoint.X + 1 - startPoint.X, stopPoint.Y + 1 - startPoint.Y)];
             pointsAlive = Enumerable.Repeat(true, Points.Length).ToArray();
 
             for (int i = 0; i < Points.Length; i++)
             {
                 if (vertical)
                 {
-                    Points[i].X = xStart;
-                    Points[i].Y = yStart + i;
+                    Points[i].X = startPoint.X;
+                    Points[i].Y = startPoint.Y + i;
                 }
                 else
                 {
-                    Points[i].X = xStart + i;
-                    Points[i].Y = yStart;
+                    Points[i].X = startPoint.X + i;
+                    Points[i].Y = startPoint.Y;
                 }
             }
         }
 
         /// <summary>
-        /// Check if another ship intersects with this ship
+        /// Check if another ship would intersect or touch  this ship
         /// </summary>
         /// <param name="other">The other ship</param>
-        /// <returns></returns>
-        public bool IntersectsShip(Ship other)
+        /// <returns>True if the given Ship intersects or touches this ship</returns>
+        public bool IntersectsOrTouchesShip(Ship other)
         {
             for (int i = 0; i < Points.Length; i++)
             {
@@ -98,8 +101,9 @@ namespace SchiffeVersenken
         /// <summary>
         /// Check if a Point intersects with this ship
         /// </summary>
-        /// <param name="point">Point</param>
-        /// <returns></returns>
+        /// <param name="x">X-Coordinate to shoot at</param>
+        /// <param name="y">Y-Coordinate to shoot at</param>
+        /// <returns>True if Coordinate hits this ship, False otherwise</returns>
         public bool ShootShip(int x, int y)
         {
             for (int i = 0; i < Points.Length; i++)

@@ -92,6 +92,9 @@ namespace SchiffeVersenken
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Show a message if the last shot hit a ship and if it destroyed that ship
+        /// </summary>
         public override void ShowHitMessage()
         {
             if (lastShotWasHit)
@@ -109,12 +112,14 @@ namespace SchiffeVersenken
             else
             {
                 Console.WriteLine("Leider kein Treffer! ¯\\_(ツ)_/¯");
-                
                 Console.WriteLine();
             }
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Show message if no ship is left and the player has won
+        /// </summary>
         public override void PlayerWonMessage()
         {
             UpdateField();

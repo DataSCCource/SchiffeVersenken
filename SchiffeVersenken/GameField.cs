@@ -149,7 +149,7 @@ namespace SchiffeVersenken
                 returnShip = new Ship(startX, startY, stopX, stopY);
                 for (int i=0; i < ships.Length; i++)
                 {
-                    if(ships[i] != null && ships[i].IntersectsShip(returnShip))
+                    if(ships[i] != null && ships[i].IntersectsOrTouchesShip(returnShip))
                     {
                         returnShip = null;
                         break;
@@ -226,7 +226,7 @@ namespace SchiffeVersenken
         public abstract void UpdateField();
 
         /// <summary>
-        /// Print current score
+        /// Update current score
         /// </summary>
         public abstract void UpdateScore();
 

@@ -12,9 +12,9 @@ namespace SchiffeVersenken
         {
             //Console.OutputEncoding = System.Text.Encoding.UTF8;
             int fieldSize = Helper.GetIntInput("Bitte Feldgröße angeben ({min}-{max}) Standard ist {defaultValue}: ", 10, 20, 10);
-            Helper.CheckExitInt(fieldSize);
+            Helper.CheckExitValue(fieldSize);
 
-            Game schiffeVersenken = new Game(fieldSize);
+            Game schiffeVersenken = new Game(fieldSize, true);
             schiffeVersenken.Run();
         }
     }
