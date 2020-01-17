@@ -4,7 +4,7 @@ pipeline {
    stages {
      stage('build') {
         steps {
-            bat "\"${tool 'MSBuild'}\" SchiffeVersenken.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+            bat "\"${tool 'MSBuild'}\"  SchiffeVersenken.sln  -restore -t:Build /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
         }
      }
      stage('test') {
