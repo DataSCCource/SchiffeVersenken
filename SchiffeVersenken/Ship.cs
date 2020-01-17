@@ -7,6 +7,16 @@ using static SchiffeVersenken.Helper;
 
 namespace SchiffeVersenken
 {
+    // Shiptypes and sizes
+    public enum ShipType
+    {
+        Battleship = 5,
+        Cruiser = 4,
+        Destroyer = 3,
+        Submarine = 2
+    }
+
+
     /// <summary>
     /// Class that represents one Ship
     /// </summary>
@@ -23,19 +33,19 @@ namespace SchiffeVersenken
             }
         }
 
-        public string ShipType
+        public string ShipTypeString
         {
             get
             {
-                switch (Points.Length)
+                switch ((ShipType)Points.Length)
                 {
-                    case 5:
+                    case ShipType.Battleship:
                         return "Schlachtschiff";
-                    case 4:
+                    case ShipType.Cruiser:
                         return "Kreuzer";
-                    case 3:
+                    case ShipType.Destroyer:
                         return "Zerstörer";
-                    case 2:
+                    case ShipType.Submarine:
                         return "U-Boot";
                     default:
                         return "unbekannter Schiffstyp";

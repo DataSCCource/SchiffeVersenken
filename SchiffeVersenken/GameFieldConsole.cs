@@ -102,7 +102,7 @@ namespace SchiffeVersenken
                 Console.WriteLine("* Treffer! :) *");
                 if (lastShotKilledShip != -1)
                 {
-                    Console.WriteLine($"*** {ships[lastShotKilledShip].ShipType} zerstört! ***");
+                    Console.WriteLine($"*** {ships[lastShotKilledShip].ShipTypeString} zerstört! ***");
                 } 
                 else
                 {
