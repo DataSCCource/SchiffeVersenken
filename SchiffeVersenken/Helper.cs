@@ -15,6 +15,8 @@ namespace SchiffeVersenken
         {
             public int X { get; set; }
             public int Y { get; set; }
+            public static Point INVALID => new Point { X = -1, Y = -1 };
+
 
             public Point(int x, int y)
             {
@@ -37,16 +39,6 @@ namespace SchiffeVersenken
             }
 
             /// <summary>
-            /// Test if given point is equal to this point
-            /// </summary>
-            /// <param name="point"></param>
-            /// <returns></returns>
-            private bool Equals(Point point)
-            {
-                return this.Equals(point);
-            }
-
-            /// <summary>
             /// Test if given coordinates belong to this point
             /// </summary>
             /// <param name="x"></param>
@@ -57,6 +49,21 @@ namespace SchiffeVersenken
                 return x == this.X && y == this.Y;
             }
         }
+
+        public enum ShootResult
+        {
+            None, WaterHit, ShipHit, DestroyShip
+        }
+
+        public enum Direction
+        {
+            None, 
+            Up = 1, 
+            Down = 2, 
+            Left = 3, 
+            Right = 4
+        }
+
 
         /// <summary>
         /// Ask User von an integer input
@@ -75,19 +82,21 @@ namespace SchiffeVersenken
             {
                 Console.Write(message);
                 string intStr = Console.ReadLine();
-                // exit on 'x' or 'q'
+                // set "magic" exit value on 'x' or 'q'
                 if (intStr.ToLower().Equals("x") || intStr.ToLower().Equals("q"))
                 {
                     return int.MinValue;
                 }
                 else if (intStr.ToLower().Equals(""))
                 {
+                    // On "no input": if defaultvalue is not set, ask again for a userinput
                     if (defaultValue == -1)
                         continue;
                     else
                         return defaultValue;
                 }
 
+                // if input is valid and within min and max, return value
                 if (Int32.TryParse(intStr, out int result)
                     && result >= min && result <= max)
                 {
@@ -103,7 +112,7 @@ namespace SchiffeVersenken
         /// If Value -2147483648 (int.MinValue) is given, exit program
         /// </summary>
         /// <param name="value"></param>
-        public static void CheckExitValue(int value)
+        public static void ExitOnExitValue(int value)
         {
             if(value == int.MinValue)
             {

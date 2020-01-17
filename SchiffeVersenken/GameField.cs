@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SchiffeVersenken.Helper;
 
 namespace SchiffeVersenken
 {
@@ -63,7 +64,7 @@ namespace SchiffeVersenken
         /// <param name="x">X-Coordinate to shoot at</param>
         /// <param name="y">Y-Coordinate to shoot at</param>
         /// <returns>true if ship is hit</returns>
-        internal bool Shoot(int x, int y)
+        internal ShootResult Shoot(int x, int y)
         {
             this.nrOfShots++;
             if(!field[x, y, 2].Equals('X'))
@@ -81,16 +82,17 @@ namespace SchiffeVersenken
                         if(ships[i].ShootShip(x, y) && !ships[i].IsAlive)
                         {
                             lastShotKilledShip = i;
+                            return ShootResult.DestroyShip;
                         }
                     }
 
-                    return true;
+                    return ShootResult.ShipHit;
                 }
             }
 
             lastShotWasHit = false;
             lastShotKilledShip = -1;
-            return false;
+            return ShootResult.WaterHit;
         }
 
         /// <summary>
@@ -106,26 +108,22 @@ namespace SchiffeVersenken
 
             for(int i=0; i<nrBs; i++)
             {
-                ships[createdShips] = CreateRandomBattleship();
-                createdShips++;
+                ships[createdShips++] = CreateRandomShip((int)ShipType.Battleship);
             }
 
             for (int i = 0; i < nrCr; i++)
             {
-                ships[createdShips] = CreateRandomCruiser();
-                createdShips++;
+                ships[createdShips++] = CreateRandomShip((int)ShipType.Cruiser);
             }
 
             for (int i = 0; i < nrDest; i++)
             {
-                ships[createdShips] = CreateRandomDestroyer();
-                createdShips++;
+                ships[createdShips++] = CreateRandomShip((int)ShipType.Destroyer);
             }
 
             for (int i = 0; i < nrSub; i++)
             {
-                ships[createdShips] = CreateRandomSubmarine();
-                createdShips++;
+                ships[createdShips++] = CreateRandomShip((int)ShipType.Submarine);
             }
         }
 
@@ -168,37 +166,6 @@ namespace SchiffeVersenken
             return returnShip;
         }
 
-        /// <summary>
-        /// Create battleship to random Coordinates
-        /// </summary>
-        private Ship CreateRandomBattleship()
-        {
-            return CreateRandomShip(5);
-        }
-
-        /// <summary>
-        /// Create cruiser to random Coordinates
-        /// </summary>
-        private Ship CreateRandomCruiser()
-        {
-            return CreateRandomShip(4);
-        }
-
-        /// <summary>
-        /// Create destroyer to random Coordinates
-        /// </summary>
-        private Ship CreateRandomDestroyer()
-        {
-            return CreateRandomShip(3);
-        }
-
-        /// <summary>
-        /// Create submarine to random Coordinates
-        /// </summary>
-        private Ship CreateRandomSubmarine()
-        {
-            return CreateRandomShip(2);
-        }
 
         /// <summary>
         /// Check if game is over
@@ -206,18 +173,6 @@ namespace SchiffeVersenken
         public bool PlayerHasWon()
         {
             return maxHits == nrOfHits;
-            //for (int y = 0; y < FieldSize; y++)
-            //{
-            //    for (int x = 0; x < FieldSize; x++)
-            //    {
-
-            //        if (field[x, y, 1] != 0 && !field[x, y, 2].Equals('X'))
-            //        {
-            //            return false;
-            //        }
-            //    }
-            //}
-            //return true;
         }
 
         /// <summary>
