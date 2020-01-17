@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SchiffeVersenken.Helper;
 
 namespace SchiffeVersenken
 {
@@ -102,7 +103,7 @@ namespace SchiffeVersenken
                 Console.WriteLine("* Treffer! :) *");
                 if (lastShotKilledShip != -1)
                 {
-                    Console.WriteLine($"*** {ships[lastShotKilledShip].ShipType} zerstört! ***");
+                    Console.WriteLine($"*** {ships[lastShotKilledShip].ShipTypeString} zerstört! ***");
                 } 
                 else
                 {
