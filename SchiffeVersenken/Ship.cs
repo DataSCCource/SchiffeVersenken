@@ -94,7 +94,7 @@ namespace SchiffeVersenken
                         return true;
                     }
 
-                    // ships should not touch each other
+                    // check if points touch eath other
                     if(  Points[i].X + 1 == other.Points[j].X && Points[i].Y == other.Points[j].Y
                       || Points[i].X == other.Points[j].X && Points[i].Y + 1 == other.Points[j].Y
                       || Points[i].X - 1 == other.Points[j].X && Points[i].Y == other.Points[j].Y
@@ -109,7 +109,7 @@ namespace SchiffeVersenken
         }
 
         /// <summary>
-        /// Check if a Point intersects with this ship
+        /// Shoot at this point and check if a point intersects with this ship
         /// </summary>
         /// <param name="x">X-Coordinate to shoot at</param>
         /// <param name="y">Y-Coordinate to shoot at</param>

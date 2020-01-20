@@ -38,7 +38,7 @@ namespace SchiffeVersenken
                 {
                     hitQuotients.Add(DoSimulationGame(CreateGameField(), nrOfRounds == 1?100:-1));
                     Console.WriteLine();
-                    Console.WriteLine($"### Average Hitquotient: {hitQuotients.Average():P2} (on {i}/{nrOfRounds} Runs) ###");
+                    Console.WriteLine($"### Durchschnittliche Trefferquote: {hitQuotients.Average():P2} (in {i}/{nrOfRounds} Runden) ###");
                     Thread.Sleep(10);
                 }
             } else
@@ -47,12 +47,20 @@ namespace SchiffeVersenken
             }
         }
 
+        /// <summary>
+        /// Create a default gamefield object
+        /// </summary>
+        /// <returns></returns>
         private GameField CreateGameField()
         {
                  //new GameFieldConsole(20, 4, 8, 12, 16) { ShowShips = testMode };
             return new GameFieldConsole(fieldSize) { ShowShips = testMode };
         }
 
+        /// <summary>
+        /// Starts a manual game played by a human
+        /// </summary>
+        /// <param name="gameField"></param>
         private void DoHumanGame(GameField gameField)
         {
             do
@@ -67,11 +75,17 @@ namespace SchiffeVersenken
 
                 gameField.Shoot(x, y);
 
-            } while (!gameField.PlayerHasWon(out double hitQuotient));
+            } while (!gameField.PlayerHasWon(out _));
             
             gameField.PlayerWonMessage();
         }
 
+        /// <summary>
+        /// Start a simulation game with the given parameters
+        /// </summary>
+        /// <param name="gameField"></param>
+        /// <param name="updateEvery"></param>
+        /// <returns>Hitquotient of the played game</returns>
         private double DoSimulationGame(GameField gameField, int updateEvery = -1)
         {
             ShootResult[,] shootField = new ShootResult[fieldSize, fieldSize];
@@ -153,10 +167,15 @@ namespace SchiffeVersenken
             return hitQuotient;
         }
 
+        /// <summary>
+        /// Return true if given Point is located in a vertical oriented ship,
+        /// meaning there is another hit above or below the given Point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="shootField"></param>
+        /// <returns></returns>
         private bool IsVerticalShip(Point point, ShootResult[,] shootField)
         {
-            int x = point.X;
-            int y = point.Y;
             Point up = GetPointOf(point, Direction.Up);
             Point down = GetPointOf(point, Direction.Down);
 
@@ -164,10 +183,15 @@ namespace SchiffeVersenken
                 || !IsOutsideOfField(down) && shootField[down.X, down.Y] >= ShootResult.ShipHit;
         }
 
+        /// <summary>
+        /// Return true if given Point is located in a horizontal oriented ship.
+        /// meaning there is another hit left or right of the given Point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="shootField"></param>
+        /// <returns></returns>
         private bool IsHorizontalShip(Point point, ShootResult[,] shootField)
         {
-            int x = point.X;
-            int y = point.Y;
             Point left = GetPointOf(point, Direction.Left);
             Point right = GetPointOf(point, Direction.Right);
 
@@ -175,6 +199,12 @@ namespace SchiffeVersenken
                 || !IsOutsideOfField(right) && shootField[right.X, right.Y] >= ShootResult.ShipHit;
         }
 
+        /// <summary>
+        /// Get a Point that is above, below, right or left of the given Point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="direction">Direction.[Up|Down|Left|Right]</param>
+        /// <returns></returns>
         private Point GetPointOf(Point point, Direction direction)
         {
             switch(direction)
@@ -192,16 +222,33 @@ namespace SchiffeVersenken
             }
         }
 
+        /// <summary>
+        /// Checks if Point is inside gamefield and was not already shot
+        /// </summary>
+        /// <param name="guessPoint"></param>
+        /// <param name="shootField"></param>
+        /// <returns></returns>
         private bool IsPossibleTarget(Point guessPoint, ShootResult[,] shootField)
         {
             return !IsOutsideOfField(guessPoint) && !WasAlreadyShot(guessPoint, shootField);
         }
 
+        /// <summary>
+        /// Returns true if position of given Point was already shot (hit or miss)
+        /// </summary>
+        /// <param name="guessPoint"></param>
+        /// <param name="shootField"></param>
+        /// <returns></returns>
         private bool WasAlreadyShot(Point guessPoint, ShootResult[,] shootField)
         {
             return shootField[guessPoint.X, guessPoint.Y] != ShootResult.None;
         }
 
+        /// <summary>
+        /// Returns true if given Point is outside of the gamefield
+        /// </summary>
+        /// <param name="guessPoint"></param>
+        /// <returns></returns>
         private bool IsOutsideOfField(Point guessPoint)
         {
             return guessPoint.X < 0 || guessPoint.X >= fieldSize || guessPoint.Y < 0 || guessPoint.Y >= fieldSize;

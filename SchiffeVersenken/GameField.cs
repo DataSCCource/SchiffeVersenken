@@ -27,11 +27,11 @@ namespace SchiffeVersenken
         /// Construct a gamefield
         /// </summary>
         /// <param name="fieldSize">length and height of gamefield</param>
-        /// <param name="nrBs">Number of Battleships; default = 1</param>
-        /// <param name="nrCr">Number of Cruisers; default = 2</param>
-        /// <param name="nrDest">Number of Destroyers; default = 3</param>
-        /// <param name="nrSub">Number of Submarines; default = 4</param>
-        public GameField(int fieldSize = 10, int nrBs = 1, int nrCr = 2, int nrDest = 3, int nrSub = 4)
+        /// <param name="noOfBattleships">Number of Battleships; default = 1</param>
+        /// <param name="noOfCruisers">Number of Cruisers; default = 2</param>
+        /// <param name="noOfDestroyers">Number of Destroyers; default = 3</param>
+        /// <param name="noOfSubmarines">Number of Submarines; default = 4</param>
+        public GameField(int fieldSize = 10, int noOfBattleships = 1, int noOfCruisers = 2, int noOfDestroyers = 3, int noOfSubmarines = 4)
         {
             rnd = new Random();
             this.FieldSize = fieldSize;
@@ -53,10 +53,9 @@ namespace SchiffeVersenken
             }
 
             // Create and place ships
-            ships = new Ship[nrBs + nrCr + nrDest + nrSub];
-            SetRandomShips(nrBs, nrCr, nrDest, nrSub);
+            ships = new Ship[noOfBattleships + noOfCruisers + noOfDestroyers + noOfSubmarines];
+            SetRandomShips(noOfBattleships, noOfCruisers, noOfDestroyers, noOfSubmarines);
         }
-
 
         /// <summary>
         /// Attempt to shoot
@@ -67,9 +66,11 @@ namespace SchiffeVersenken
         internal ShootResult Shoot(int x, int y)
         {
             this.nrOfShots++;
+            // If was not already hit
             if(!field[x, y, 2].Equals('X'))
             {
                 field[x, y, 2] = 'W';
+                // if is a ship
                 if (field[x,y,1] != 0)
                 {
                     field[x, y, 2] = 'X';
@@ -79,13 +80,14 @@ namespace SchiffeVersenken
 
                     for (int i = 0; i < ships.Length; i++)
                     {
+                        // checked all ships to see if the last shot sunk one
                         if(ships[i].ShootShip(x, y) && !ships[i].IsAlive)
                         {
+                            // if so, set variable for ship destroyed notification
                             lastShotKilledShip = i;
                             return ShootResult.DestroyShip;
                         }
                     }
-
                     return ShootResult.ShipHit;
                 }
             }
@@ -98,30 +100,30 @@ namespace SchiffeVersenken
         /// <summary>
         /// Create ships and place to random  position
         /// </summary>
-        /// <param name="nrBs">Number of Battleships; default = 1</param>
-        /// <param name="nrCr">Number of Cruisers; default = 2</param>
-        /// <param name="nrDest">Number of Destroyers; default = 3</param>
-        /// <param name="nrSub">Number of Submarines; default = 4</param>
-        public void SetRandomShips(int nrBs, int nrCr, int nrDest, int nrSub)
+        /// <param name="noOfBattleships">Number of Battleships; default = 1</param>
+        /// <param name="noOfCruisers">Number of Cruisers; default = 2</param>
+        /// <param name="noOfDestroyers">Number of Destroyers; default = 3</param>
+        /// <param name="noOfSubmarines">Number of Submarines; default = 4</param>
+        public void SetRandomShips(int noOfBattleships, int noOfCruisers, int noOfDestroyers, int noOfSubmarines)
         {
             int createdShips = 0;
 
-            for(int i=0; i<nrBs; i++)
+            for(int i=0; i<noOfBattleships; i++)
             {
                 ships[createdShips++] = CreateRandomShip((int)ShipType.Battleship);
             }
 
-            for (int i = 0; i < nrCr; i++)
+            for (int i = 0; i < noOfCruisers; i++)
             {
                 ships[createdShips++] = CreateRandomShip((int)ShipType.Cruiser);
             }
 
-            for (int i = 0; i < nrDest; i++)
+            for (int i = 0; i < noOfDestroyers; i++)
             {
                 ships[createdShips++] = CreateRandomShip((int)ShipType.Destroyer);
             }
 
-            for (int i = 0; i < nrSub; i++)
+            for (int i = 0; i < noOfSubmarines; i++)
             {
                 ships[createdShips++] = CreateRandomShip((int)ShipType.Submarine);
             }
