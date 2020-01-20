@@ -86,7 +86,10 @@ namespace SchiffeVersenken
                 {
                     x = rnd.Next(0, fieldSize);
                     y = rnd.Next(0, fieldSize);
-                    if (shootField[x, y] != ShootResult.None)
+                    Point nextTarget = new Point { X = x, Y = y };
+                    
+                    if (shootField[x, y] != ShootResult.None
+                        || IsVerticalShip(nextTarget, shootField) || IsHorizontalShip(nextTarget, shootField))
                     {
                         continue;
                     }
@@ -123,9 +126,9 @@ namespace SchiffeVersenken
                         listOfHits.RemoveAt(0);
                         continue;
                     }
-
                     x = nextTarget.X;
                     y = nextTarget.Y;
+
                 }
 
                 shootField[x, y] = gameField.Shoot(x, y);
