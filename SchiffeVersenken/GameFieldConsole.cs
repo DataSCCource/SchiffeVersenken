@@ -9,8 +9,8 @@ namespace SchiffeVersenken
 {
     public class GameFieldConsole : GameField
     {
-        public GameFieldConsole(int fieldSize = 10, int nrBs = 1, int nrCr = 2, int nrDest = 3, int nrSub = 4) 
-            : base(fieldSize, nrBs, nrCr, nrDest, nrSub) { }
+        public GameFieldConsole(int fieldSize = 10, int noOfBattleships = 1, int noOfCruisers = 2, int noOfDestroyers = 3, int noOfSubmarines = 4) 
+            : base(fieldSize, noOfBattleships, noOfCruisers, noOfDestroyers, noOfSubmarines) { }
 
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace SchiffeVersenken
             UpdateScore();
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("   ");
+            Console.Write("    ");
             for (int i = 0; i < FieldSize; i++)
             {
                 Console.Write(String.Format("{0,2}", i));
@@ -66,8 +66,6 @@ namespace SchiffeVersenken
                         Console.Write(field[x, y, 0]);
                         Console.Write(field[x, y, 0]);
                     }
-                    //Console.BackgroundColor = ConsoleColor.Black;
-                    //Console.Write(" ");
                 }
                 Console.WriteLine();
             }
