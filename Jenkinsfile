@@ -4,12 +4,13 @@ pipeline {
 	stages {
 		stage('build') {
 			steps {
-            bat "\"${tool 'MSBuild'}\" SchiffeVersenken.sln -restore -t:Build /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+                bat "\"C:/Program Files (x86)/NuGet/nuget.exe\" restore SchiffeVersenken.Tests/packages.config -PackagesDirectory packages"
+                bat "\"${tool 'MSBuild'}\" SchiffeVersenken.sln -restore -t:Build /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
 			}
 		}
 		stage('test') {
 			steps {
-			sh "echo 'TODO RUN TEST'"
+				bat "\"c:/Program Files (x86)/NUnit.org/nunit-console/nunit3-console.exe\" SchiffeVersenken.Tests/bin/Debug/SchiffeVersenken.Tests.dll --result=TestR.xml;format=nunit2"
 			}
 		}
 	}
