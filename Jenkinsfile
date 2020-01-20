@@ -4,7 +4,8 @@ pipeline {
 	stages {
 		stage('build') {
 			steps {
-            bat "\"${tool 'MSBuild'}\" SchiffeVersenken.sln -restore -t:Build /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
+                bat "\"C:/Program Files (x86)/NUnit.org/nunit-console/nunit3-console.exe\" restore SchiffeVersenken.Tests/packages.config -PackagesDirectory ../package"
+                bat "\"${tool 'MSBuild'}\" SchiffeVersenken.sln -restore -t:Build /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}"
 			}
 		}
 		stage('test') {
