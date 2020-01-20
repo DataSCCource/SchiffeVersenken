@@ -57,11 +57,7 @@ namespace SchiffeVersenken
 
         public enum Direction
         {
-            None, 
-            Up = 1, 
-            Down = 2, 
-            Left = 3, 
-            Right = 4
+            None, Up, Down, Left, Right
         }
 
 
@@ -105,7 +101,6 @@ namespace SchiffeVersenken
 
                 Console.WriteLine($"Ungültige Eingabe. Bitte nur Ganzzahlen zwischen {min} und {max} eingeben!");
             } while (true);
-
         }
 
         /// <summary>

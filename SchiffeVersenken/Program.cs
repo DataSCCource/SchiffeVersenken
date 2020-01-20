@@ -10,8 +10,7 @@ namespace SchiffeVersenken
     {
         static void Main()
         {
-            //Console.OutputEncoding = System.Text.Encoding.UTF8;
-
+            // Main game loop
             do
             {
                 int fieldSize = Helper.GetIntInput("Bitte Feldgröße angeben ({min}-{max}) Standard ist {defaultValue}: ", 10, 20, 10);
